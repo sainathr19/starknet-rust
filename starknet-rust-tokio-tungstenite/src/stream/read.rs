@@ -189,7 +189,6 @@ impl StreamReadDriver {
                         }
                     }
                     StreamUpdateOrResponse::Response(JsonRpcResponse::Success { id, result }) => {
-                        let id = id.and_then(|i| i.as_u64());
                         match result {
                             SubscriptionIdOrBool::SubscriptionId(subscription_id) => {
                                 // Response for subscribe requests
@@ -243,7 +242,6 @@ impl StreamReadDriver {
                         }
                     }
                     StreamUpdateOrResponse::Response(JsonRpcResponse::Error { id, error }) => {
-                        let id = id.and_then(|i| i.as_u64());
                         if let Some(pending_sub) =
                             id.and_then(|id| self.pending_subscriptions.remove(&id))
                         {
