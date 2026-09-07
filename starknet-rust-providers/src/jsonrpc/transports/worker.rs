@@ -26,7 +26,7 @@ pub enum WorkersTransportError {
     /// Unexpected response ID.
     #[error("unexpected response ID: {0}")]
     UnexpectedResponseId(u64),
-    /// Response carried a non-numeric (string or null) id that can't be matched to a request.
+    /// Response carried not a valid numeric id that can't be matched to a request.
     #[error("response has a non-numeric id")]
     NonNumericResponseId,
 }
