@@ -192,7 +192,7 @@ impl StreamReadDriver {
                         match result {
                             SubscriptionIdOrBool::SubscriptionId(subscription_id) => {
                                 // Response for subscribe requests
-                                match self.pending_subscriptions.remove(&id) {
+                                match id.and_then(|id| self.pending_subscriptions.remove(&id)) {
                                     Some(pending) => {
                                         if matches!(
                                             pending.result.send(SubscriptionResult::Success {
@@ -220,7 +220,7 @@ impl StreamReadDriver {
                             }
                             SubscriptionIdOrBool::Bool(success) => {
                                 // Response for unsubscribe requests
-                                match self.pending_unsubscriptions.remove(&id) {
+                                match id.and_then(|id| self.pending_unsubscriptions.remove(&id)) {
                                     Some(pending) => {
                                         // Remove the subscription from internal registry on a best-
                                         // effort basis. It's fine if it doesn't exist.
@@ -242,13 +242,16 @@ impl StreamReadDriver {
                         }
                     }
                     StreamUpdateOrResponse::Response(JsonRpcResponse::Error { id, error }) => {
-                        if let Some(pending_sub) = self.pending_subscriptions.remove(&id) {
+                        if let Some(pending_sub) =
+                            id.and_then(|id| self.pending_subscriptions.remove(&id))
+                        {
                             // This failing means the caller gave up on waiting. Ignoring failure is
                             // fine as the subscription didn't succeed anyway.
                             let _ = pending_sub
                                 .result
                                 .send(SubscriptionResult::JsonRpcError(error));
-                        } else if let Some(pending_unsub) = self.pending_unsubscriptions.remove(&id)
+                        } else if let Some(pending_unsub) =
+                            id.and_then(|id| self.pending_unsubscriptions.remove(&id))
                         {
                             // This failing means the caller gave up on waiting. Ignoring failure is
                             // fine as this usually indicates that the subscription doesn't exist.
