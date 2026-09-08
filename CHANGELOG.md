@@ -94,6 +94,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#125]: https://github.com/software-mansion/starknet-rust/pull/125
 [#148]: https://github.com/software-mansion/starknet-rust/pull/148
 [#154]: https://github.com/software-mansion/starknet-rust/pull/154
-[#157]: https://github.com/software-mansion/starknet-rust/pull/157
 [#159]: https://github.com/software-mansion/starknet-rust/pull/159
-[#160]: https://github.com/software-mansion/starknet-rust/pull/160

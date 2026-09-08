@@ -253,7 +253,7 @@ pub enum JsonRpcResponse<T> {
     /// Successful response.
     Success {
         /// Same id as the corresponding request. `None` when the server sent a null or
-        /// non-numeric id (e.g. a null id on an error raised before the request was read).
+        /// invalid numeric id (e.g. a null id on an error raised before the request was read).
         #[serde(default, deserialize_with = "deserialize_response_id")]
         id: Option<u64>,
         /// Response data.
@@ -262,7 +262,7 @@ pub enum JsonRpcResponse<T> {
     /// Unsuccessful response.
     Error {
         /// Same id as the corresponding request. `None` when the server sent a null or
-        /// non-numeric id (e.g. a null id on an error raised before the request was read).
+        /// invalid numeric id (e.g. a null id on an error raised before the request was read).
         #[serde(default, deserialize_with = "deserialize_response_id")]
         id: Option<u64>,
         /// Error details.

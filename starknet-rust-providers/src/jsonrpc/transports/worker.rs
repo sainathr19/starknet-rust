@@ -26,9 +26,9 @@ pub enum WorkersTransportError {
     /// Unexpected response ID.
     #[error("unexpected response ID: {0}")]
     UnexpectedResponseId(u64),
-    /// Response carried not a valid numeric id that can't be matched to a request.
-    #[error("response has a non-numeric id")]
-    NonNumericResponseId,
+    /// Response carried an invalid numeric id that can't be matched to a request.
+    #[error("response has an invalid numeric id")]
+    InvalidNumericResponseId,
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -169,10 +169,10 @@ impl JsonRpcTransport for WorkersTransport {
             };
 
             // This client assigns a numeric id to every batched request, so a response
-            // with a non-numeric (string or null) id can't be correlated to one.
+            // with an invalid numeric id can't be correlated to one.
             let id = match id {
                 Some(id) => *id as usize,
-                None => return Err(Self::Error::NonNumericResponseId),
+                None => return Err(Self::Error::InvalidNumericResponseId),
             };
 
             if id >= request_count {
